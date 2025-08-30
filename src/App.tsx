@@ -1,4 +1,5 @@
-import { useEffect, useState, ChangeEvent } from "react";
+import { useEffect, useState } from "react";
+import type { ChangeEvent } from "react";
 import jsPDF from "jspdf";
 
 type Product = {
