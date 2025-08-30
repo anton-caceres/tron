@@ -2,15 +2,14 @@ import { useEffect, useState } from "react";
 import type { ChangeEvent } from "react";
 import jsPDF from "jspdf";
 
+/* ===================== Tipos ===================== */
 type Product = {
   id: number;
   nombre: string;
   precio: number;
   categoria?: string;
 };
-
 type CartItem = Product & { qty: number };
-
 type Company = {
   razon: string;
   cuit: string;
@@ -23,6 +22,7 @@ type Company = {
   payment: string;
 };
 
+/* ===================== Componente ===================== */
 export default function TronWireframes() {
   // ===== Navegación =====
   const [section, setSection] = useState<string>("inicio");
@@ -52,13 +52,12 @@ export default function TronWireframes() {
     }).format(v || 0);
 
   // ===== Carrito =====
-  const [cart, setCart] = useState<CartItem[]>([]); // [{id, nombre, precio, qty}]
+  const [cart, setCart] = useState<CartItem[]>([]);
   const addToCart = (item: Product, qty: number = 1) => {
     const q = Math.max(1, qty | 0);
     setCart((prev: CartItem[]) => {
       const existing = prev.find((p) => p.id === item.id);
-      if (existing)
-        return prev.map((p) => (p.id === item.id ? { ...p, qty: p.qty + q } : p));
+      if (existing) return prev.map((p) => (p.id === item.id ? { ...p, qty: p.qty + q } : p));
       return [...prev, { ...item, qty: q }];
     });
   };
@@ -227,20 +226,12 @@ export default function TronWireframes() {
       <h2 className="text-3xl sm:text-4xl font-bold text-orange-500">TRON Mayoristas</h2>
       <p className="text-lg sm:text-xl text-gray-200">“Acompañamos tu crecimiento”</p>
       <div className="bg-gray-900 rounded-2xl p-6 sm:p-10 flex flex-col items-center space-y-6">
-        <div className="bg-gray-700 w-full h-36 sm:h-48 flex items-center justify-center rounded-lg">
-          Slider / Imagen destacada
-        </div>
+        <div className="bg-gray-700 w-full h-36 sm:h-48 flex items-center justify-center rounded-lg">Slider / Imagen destacada</div>
         <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-          <button
-            onClick={() => setSection("catalogo")}
-            className="w-full sm:w-auto bg-orange-500 text-black px-6 py-3 rounded-2xl font-semibold hover:scale-105 transition"
-          >
+          <button onClick={() => setSection("catalogo")} className="w-full sm:w-auto bg-orange-500 text-black px-6 py-3 rounded-2xl font-semibold hover:scale-105 transition">
             Ver Catálogo
           </button>
-          <button
-            onClick={() => setSection("mayoristas")}
-            className="w-full sm:w-auto bg-gray-800 px-6 py-3 rounded-2xl hover:scale-105 transition"
-          >
+          <button onClick={() => setSection("mayoristas")} className="w-full sm:w-auto bg-gray-800 px-6 py-3 rounded-2xl hover:scale-105 transition">
             Beneficios Mayoristas
           </button>
         </div>
@@ -250,24 +241,17 @@ export default function TronWireframes() {
 
   const QuienesSomos = () => (
     <section className="py-8 sm:py-12 px-4">
-      <h2 className="text-3xl font-bold text-orange-500 text-center mb-6 sm:mb-8">
-        Quiénes Somos
-      </h2>
+      <h2 className="text-3xl font-bold text-orange-500 text-center mb-6 sm:mb-8">Quiénes Somos</h2>
       <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
         <div className="bg-gray-900 rounded-2xl p-6 text-center space-y-3">
           <div className="text-4xl">🏢</div>
           <p className="font-semibold text-orange-400">Nuestra historia</p>
-          <p className="text-gray-400 text-sm">
-            Marca argentina de accesorios y equipamiento deportivo. Calidad + precio
-            mayorista.
-          </p>
+          <p className="text-gray-400 text-sm">Marca argentina de accesorios y equipamiento deportivo. Calidad + precio mayorista.</p>
         </div>
         <div className="bg-gray-900 rounded-2xl p-6 text-center space-y-3">
           <div className="text-4xl">🎯</div>
           <p className="font-semibold text-orange-400">Misión</p>
-          <p className="text-gray-400 text-sm">
-            Facilitar a negocios y profesores el acceso a equipamiento confiable.
-          </p>
+          <p className="text-gray-400 text-sm">Facilitar a negocios y profesores el acceso a equipamiento confiable.</p>
         </div>
         <div className="bg-gray-900 rounded-2xl p-6 text-center space-y-3">
           <div className="text-4xl">🌍</div>
@@ -316,20 +300,13 @@ export default function TronWireframes() {
 
       {/* Toggle filtros en mobile */}
       <div className="md:hidden mb-4">
-        <button
-          onClick={() => setShowFilters((v) => !v)}
-          className="w-full bg-gray-800 rounded-xl p-3 text-left flex items-center justify-between"
-        >
+        <button onClick={() => setShowFilters((v) => !v)} className="w-full bg-gray-800 rounded-xl p-3 text-left flex items-center justify-between">
           <span className="text-orange-400 font-semibold">Categorías y filtros</span>
           <span>{showFilters ? "▲" : "▼"}</span>
         </button>
         {showFilters && (
           <aside className="mt-3 bg-gray-900 p-4 rounded-2xl space-y-4">
-            <input
-              type="text"
-              placeholder="Buscar productos..."
-              className="w-full p-2 rounded border border-gray-400 text-black bg-white"
-            />
+            <input type="text" placeholder="Buscar productos..." className="w-full p-2 rounded border border-gray-400 text-black bg-white" />
             <Categorias />
           </aside>
         )}
@@ -338,34 +315,19 @@ export default function TronWireframes() {
       <div className="flex flex-col md:flex-row gap-6">
         {/* Sidebar categorías desktop */}
         <aside className="hidden md:block w-full md:w-1/4 bg-gray-900 p-4 rounded-2xl space-y-4 h-max">
-          <input
-            type="text"
-            placeholder="Buscar productos..."
-            className="w-full p-2 rounded border border-gray-400 text-black bg-white"
-          />
+          <input type="text" placeholder="Buscar productos..." className="w-full p-2 rounded border border-gray-400 text-black bg-white" />
           <Categorias />
         </aside>
 
         {/* Grilla productos */}
         <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 w-full">
           {DummyProducts.map((p) => (
-            <div
-              key={p.id}
-              className="bg-gray-900 p-4 sm:p-6 rounded-2xl flex flex-col items-center space-y-3"
-            >
-              <div className="w-full h-28 sm:h-32 bg-gray-700 flex items-center justify-center rounded">
-                Img
-              </div>
+            <div key={p.id} className="bg-gray-900 p-4 sm:p-6 rounded-2xl flex flex-col items-center space-y-3">
+              <div className="w-full h-28 sm:h-32 bg-gray-700 flex items-center justify-center rounded">Img</div>
               <p className="text-white font-semibold text-center text-sm sm:text-base">{p.nombre}</p>
               <p className="text-gray-400 text-xs sm:text-sm">{formatARS(p.precio)}</p>
               <div className="flex items-center gap-2 w-full justify-center">
-                <input
-                  type="number"
-                  min={1}
-                  defaultValue={1}
-                  id={`qty-${p.id}`}
-                  className="w-16 sm:w-20 p-1 rounded border border-gray-400 text-black bg-white"
-                />
+                <input type="number" min={1} defaultValue={1} id={`qty-${p.id}`} className="w-16 sm:w-20 p-1 rounded border border-gray-400 text-black bg-white" />
                 <button
                   onClick={() => {
                     const el = document.getElementById(`qty-${p.id}`) as HTMLInputElement | null;
@@ -396,22 +358,12 @@ export default function TronWireframes() {
       </div>
       <h2 className="text-3xl font-bold text-orange-500 text-center mb-6 sm:mb-8">Detalle de Producto</h2>
       <div className="bg-gray-900 rounded-2xl p-4 sm:p-6 flex flex-col md:flex-row gap-6 max-w-5xl mx-auto">
-        <div className="w-full md:w-1/2 bg-gray-700 h-56 sm:h-64 flex items-center justify-center rounded">
-          Foto grande
-        </div>
+        <div className="w-full md:w-1/2 bg-gray-700 h-56 sm:h-64 flex items-center justify-center rounded">Foto grande</div>
         <div className="w-full md:w-1/2 space-y-4">
           <h3 className="text-lg sm:text-xl font-semibold">Producto demo</h3>
-          <p className="text-gray-300 text-sm sm:text-base">
-            Descripción detallada del producto con beneficios y características.
-          </p>
+          <p className="text-gray-300 text-sm sm:text-base">Descripción detallada del producto con beneficios y características.</p>
           <div className="flex items-center gap-3">
-            <input
-              type="number"
-              min={1}
-              defaultValue={1}
-              id="qty-detalle"
-              className="w-16 sm:w-20 p-1 rounded border border-gray-400 text-black bg-white"
-            />
+            <input type="number" min={1} defaultValue={1} id="qty-detalle" className="w-16 sm:w-20 p-1 rounded border border-gray-400 text-black bg-white" />
             <button
               className="bg-orange-500 text-black px-5 sm:px-6 py-2 rounded-2xl hover:scale-105 transition"
               onClick={() => {
@@ -452,35 +404,13 @@ export default function TronWireframes() {
       <h2 className="text-3xl font-bold text-orange-500 text-center mb-6 sm:mb-8">Contacto</h2>
       <div className="bg-gray-900 rounded-2xl p-4 sm:p-6 space-y-4 text-gray-200 max-w-2xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <input
-            type="text"
-            placeholder="Nombre"
-            className="w-full p-2 rounded-lg text-black bg-white border border-gray-400"
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            className="w-full p-2 rounded-lg text-black bg-white border border-gray-400"
-          />
-          <input
-            type="text"
-            placeholder="WhatsApp"
-            className="w-full p-2 rounded-lg text-black bg-white border border-gray-400"
-          />
-          <input
-            type="text"
-            placeholder="Ciudad / Provincia"
-            className="w-full p-2 rounded-lg text-black bg-white border border-gray-400"
-          />
+          <input type="text" placeholder="Nombre" className="w-full p-2 rounded-lg text-black bg-white border border-gray-400" />
+          <input type="email" placeholder="Email" className="w-full p-2 rounded-lg text-black bg-white border border-gray-400" />
+          <input type="text" placeholder="WhatsApp" className="w-full p-2 rounded-lg text-black bg-white border border-gray-400" />
+          <input type="text" placeholder="Ciudad / Provincia" className="w-full p-2 rounded-lg text-black bg-white border border-gray-400" />
         </div>
-        <textarea
-          placeholder="Mensaje"
-          className="w-full p-2 rounded-lg text-black bg-white border border-gray-400"
-          rows={4}
-        ></textarea>
-        <button className="w-full sm:w-auto bg-orange-500 text-black px-6 py-2 rounded-2xl hover:scale-105 transition">
-          Enviar
-        </button>
+        <textarea placeholder="Mensaje" className="w-full p-2 rounded-lg text-black bg-white border border-gray-400" rows={4}></textarea>
+        <button className="w-full sm:w-auto bg-orange-500 text-black px-6 py-2 rounded-2xl hover:scale-105 transition">Enviar</button>
       </div>
     </section>
   );
@@ -489,37 +419,21 @@ export default function TronWireframes() {
     <section className="py-8 sm:py-12 px-4">
       <h2 className="text-3xl font-bold text-orange-500 text-center mb-6 sm:mb-8">Acceso Mayoristas</h2>
       <div className="bg-gray-900 rounded-2xl p-6 w-full max-w-md mx-auto space-y-4 text-gray-200">
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full p-2 rounded-lg text-black bg-white border border-gray-400"
-        />
-        <input
-          type="password"
-          placeholder="Contraseña"
-          className="w-full p-2 rounded-lg text-black bg-white border border-gray-400"
-        />
+        <input type="email" placeholder="Email" className="w-full p-2 rounded-lg text-black bg-white border border-gray-400" />
+        <input type="password" placeholder="Contraseña" className="w-full p-2 rounded-lg text-black bg-white border border-gray-400" />
         <label className="flex items-center gap-2 text-sm text-gray-300">
-          <input
-            type="checkbox"
-            checked={rememberMe}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setRememberMe(e.target.checked)}
-          />
+          <input type="checkbox" checked={rememberMe} onChange={(e: ChangeEvent<HTMLInputElement>) => setRememberMe(e.target.checked)} />
           Recordarme
         </label>
         <button
           onClick={handleLogin}
           disabled={isLoggingIn}
-          className={`w-full py-2 rounded-2xl font-semibold transition ${
-            isLoggingIn ? "bg-gray-700 text-gray-300" : "bg-orange-500 text-black hover:scale-105"
-          }`}
+          className={`w-full py-2 rounded-2xl font-semibold transition ${isLoggingIn ? "bg-gray-700 text-gray-300" : "bg-orange-500 text-black hover:scale-105"}`}
         >
           {isLoggingIn ? "Validando..." : "Iniciar Sesión"}
         </button>
         {loginError && <div className="bg-red-700 rounded-xl p-3 text-sm text-white">{loginError}</div>}
-        {loginSuccess && (
-          <div className="bg-gray-800 rounded-xl p-3 text-sm text-gray-200">Login exitoso. Redirigiendo…</div>
-        )}
+        {loginSuccess && <div className="bg-gray-800 rounded-xl p-3 text-sm text-gray-200">Login exitoso. Redirigiendo…</div>}
         <button
           onClick={() => {
             setSection("recuperar");
@@ -532,10 +446,7 @@ export default function TronWireframes() {
           ¿Olvidaste tu contraseña?
         </button>
         <div className="text-center text-sm text-gray-400">¿No tenés cuenta?</div>
-        <button
-          onClick={() => setSection("registro")}
-          className="w-full bg-gray-700 py-2 rounded-2xl hover:scale-105 transition"
-        >
+        <button onClick={() => setSection("registro")} className="w-full bg-gray-700 py-2 rounded-2xl hover:scale-105 transition">
           Registrarse como Mayorista
         </button>
       </div>
@@ -568,20 +479,12 @@ export default function TronWireframes() {
       <div className="bg-gray-900 rounded-2xl p-6 w-full max-w-md mx-auto space-y-4 text-gray-200">
         {!sent && (
           <>
-            <p className="text-sm text-gray-300">
-              Ingresá tu email y te enviaremos un enlace para restablecer la contraseña.
-            </p>
-            <input
-              type="email"
-              placeholder="Email"
-              className="w-full p-2 rounded-lg text-black bg-white border border-gray-400"
-            />
+            <p className="text-sm text-gray-300">Ingresá tu email y te enviaremos un enlace para restablecer la contraseña.</p>
+            <input type="email" placeholder="Email" className="w-full p-2 rounded-lg text-black bg-white border border-gray-400" />
             <button
               disabled={isSending}
               onClick={handleRecovery}
-              className={`w-full py-2 rounded-2xl font-semibold transition ${
-                isSending ? "bg-gray-700 text-gray-300" : "bg-orange-500 text-black hover:scale-105"
-              }`}
+              className={`w-full py-2 rounded-2xl font-semibold transition ${isSending ? "bg-gray-700 text-gray-300" : "bg-orange-500 text-black hover:scale-105"}`}
             >
               {isSending ? "Enviando..." : "Enviar enlace"}
             </button>
@@ -589,11 +492,7 @@ export default function TronWireframes() {
         )}
         {isSending && <div className="text-center text-sm text-gray-400">Procesando solicitud...</div>}
         {recoveryError && <div className="bg-red-700 rounded-xl p-4 text-sm text-white">{recoveryError}</div>}
-        {sent && (
-          <div className="bg-gray-800 rounded-xl p-4 text-sm text-gray-200">
-            Si la cuenta existe, te enviamos un mail con instrucciones.
-          </div>
-        )}
+        {sent && <div className="bg-gray-800 rounded-xl p-4 text-sm text-gray-200">Si la cuenta existe, te enviamos un mail con instrucciones.</div>}
         <button
           onClick={() => {
             setSection("acceso");
@@ -619,10 +518,7 @@ export default function TronWireframes() {
           <>
             <ul className="divide-y divide-gray-800">
               {cart.map((item) => (
-                <li
-                  key={item.id}
-                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 py-3"
-                >
+                <li key={item.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 py-3">
                   <div>
                     <p className="font-semibold text-sm sm:text-base">{item.nombre}</p>
                     <p className="text-xs sm:text-sm text-gray-400">{formatARS(item.precio)} c/u</p>
@@ -632,18 +528,11 @@ export default function TronWireframes() {
                       type="number"
                       min={1}
                       value={item.qty}
-                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                        updateQty(item.id, parseInt(e.target.value || "1", 10))
-                      }
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => updateQty(item.id, parseInt(e.target.value || "1", 10))}
                       className="w-16 p-1 rounded text-black bg-white border border-gray-400"
                     />
-                    <span className="text-sm text-gray-300 w-24 sm:w-28 text-right">
-                      {formatARS(item.qty * (item.precio || 0))}
-                    </span>
-                    <button
-                      onClick={() => removeFromCart(item.id)}
-                      className="text-sm bg-gray-700 px-3 py-1 rounded-lg"
-                    >
+                    <span className="text-sm text-gray-300 w-24 sm:w-28 text-right">{formatARS(item.qty * (item.precio || 0))}</span>
+                    <button onClick={() => removeFromCart(item.id)} className="text-sm bg-gray-700 px-3 py-1 rounded-lg">
                       Quitar
                     </button>
                   </div>
@@ -655,22 +544,13 @@ export default function TronWireframes() {
               <p className="text-lg sm:text-xl font-bold text-orange-400">{formatARS(cartSubtotal)}</p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 justify-end">
-              <button
-                onClick={() => setSection("catalogo")}
-                className="w-full sm:w-auto bg-gray-700 px-4 py-2 rounded-lg"
-              >
+              <button onClick={() => setSection("catalogo")} className="w-full sm:w-auto bg-gray-700 px-4 py-2 rounded-lg">
                 Seguir comprando
               </button>
-              <button
-                onClick={() => setSection("checkout")}
-                className="w-full sm:w-auto bg-orange-500 text-black px-4 py-2 rounded-lg"
-              >
+              <button onClick={() => setSection("checkout")} className="w-full sm:w-auto bg-orange-500 text-black px-4 py-2 rounded-lg">
                 Iniciar checkout
               </button>
-              <button
-                onClick={openWhatsApp}
-                className="w-full sm:w-auto bg-green-500 text-black px-4 py-2 rounded-lg"
-              >
+              <button onClick={openWhatsApp} className="w-full sm:w-auto bg-green-500 text-black px-4 py-2 rounded-lg">
                 Confirmar compra por WhatsApp
               </button>
             </div>
@@ -687,23 +567,9 @@ export default function TronWireframes() {
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-gray-900 rounded-2xl p-4 sm:p-6 space-y-3">
             <p className="font-semibold text-orange-400">1) Datos de empresa</p>
-            <input
-              className="w-full p-2 rounded text-black bg-white border border-gray-400"
-              placeholder="Razón social"
-              value={company.razon}
-              onChange={cc("razon")}
-            />
-            <input
-              className="w-full p-2 rounded text-black bg-white border border-gray-400"
-              placeholder="CUIT"
-              value={company.cuit}
-              onChange={cc("cuit")}
-            />
-            <select
-              className="w-full p-2 rounded text-black bg-white border border-gray-400"
-              value={company.iva}
-              onChange={cc("iva")}
-            >
+            <input className="w-full p-2 rounded text-black bg-white border border-gray-400" placeholder="Razón social" value={company.razon} onChange={cc("razon")} />
+            <input className="w-full p-2 rounded text-black bg-white border border-gray-400" placeholder="CUIT" value={company.cuit} onChange={cc("cuit")} />
+            <select className="w-full p-2 rounded text-black bg-white border border-gray-400" value={company.iva} onChange={cc("iva")}>
               <option value="">Condición IVA</option>
               <option>Responsable Inscripto</option>
               <option>Monotributo</option>
@@ -712,37 +578,13 @@ export default function TronWireframes() {
           </div>
           <div className="bg-gray-900 rounded-2xl p-4 sm:p-6 space-y-3">
             <p className="font-semibold text-orange-400">2) Envío</p>
-            <input
-              className="w-full p-2 rounded text-black bg-white border border-gray-400"
-              placeholder="Dirección"
-              value={company.address}
-              onChange={cc("address")}
-            />
+            <input className="w-full p-2 rounded text-black bg-white border border-gray-400" placeholder="Dirección" value={company.address} onChange={cc("address")} />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <input
-                className="p-2 rounded text-black bg-white border border-gray-400"
-                placeholder="Ciudad"
-                value={company.city}
-                onChange={cc("city")}
-              />
-              <input
-                className="p-2 rounded text-black bg-white border border-gray-400"
-                placeholder="Provincia"
-                value={company.province}
-                onChange={cc("province")}
-              />
+              <input className="p-2 rounded text-black bg-white border border-gray-400" placeholder="Ciudad" value={company.city} onChange={cc("city")} />
+              <input className="p-2 rounded text-black bg-white border border-gray-400" placeholder="Provincia" value={company.province} onChange={cc("province")} />
             </div>
-            <input
-              className="w-full p-2 rounded text-black bg-white border border-gray-400"
-              placeholder="Código Postal"
-              value={company.cp}
-              onChange={cc("cp")}
-            />
-            <select
-              className="w-full p-2 rounded text-black bg-white border border-gray-400"
-              value={company.shipping}
-              onChange={cc("shipping")}
-            >
+            <input className="w-full p-2 rounded text-black bg-white border border-gray-400" placeholder="Código Postal" value={company.cp} onChange={cc("cp")} />
+            <select className="w-full p-2 rounded text-black bg-white border border-gray-400" value={company.shipping} onChange={cc("shipping")}>
               <option value="">Método de envío</option>
               <option>Transporte a cargo del cliente</option>
               <option>OCA / Correo</option>
@@ -751,11 +593,7 @@ export default function TronWireframes() {
           </div>
           <div className="bg-gray-900 rounded-2xl p-4 sm:p-6 space-y-3">
             <p className="font-semibold text-orange-400">3) Pago</p>
-            <select
-              className="w-full p-2 rounded text-black bg-white border border-gray-400"
-              value={company.payment}
-              onChange={cc("payment")}
-            >
+            <select className="w-full p-2 rounded text-black bg-white border border-gray-400" value={company.payment} onChange={cc("payment")}>
               <option value="">Medio de pago</option>
               <option>Transferencia bancaria</option>
               <option>Cuenta corriente (aprobada)</option>
@@ -792,13 +630,8 @@ export default function TronWireframes() {
           >
             Confirmar pedido
           </button>
-          <button className="w-full bg-gray-700 py-2 rounded-2xl">
-            Solicitar cotización por WhatsApp
-          </button>
-          <button
-            onClick={() => setSection("carrito")}
-            className="w-full text-orange-400 text-sm underline"
-          >
+          <button className="w-full bg-gray-700 py-2 rounded-2xl">Solicitar cotización por WhatsApp</button>
+          <button onClick={() => setSection("carrito")} className="w-full text-orange-400 text-sm underline">
             Volver al carrito
           </button>
         </aside>
@@ -813,16 +646,10 @@ export default function TronWireframes() {
         Tu número de orden es <span className="text-orange-400 font-semibold">{orderId}</span>.
       </p>
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
-        <button
-          onClick={() => setSection("catalogo")}
-          className="w-full sm:w-auto bg-gray-700 px-4 py-2 rounded-2xl"
-        >
+        <button onClick={() => setSection("catalogo")} className="w-full sm:w-auto bg-gray-700 px-4 py-2 rounded-2xl">
           Seguir comprando
         </button>
-        <button
-          onClick={generatePDF}
-          className="w-full sm:w-auto bg-orange-500 text-black px-4 py-2 rounded-2xl"
-        >
+        <button onClick={generatePDF} className="w-full sm:w-auto bg-orange-500 text-black px-4 py-2 rounded-2xl">
           Descargar comprobante (PDF)
         </button>
       </div>
@@ -863,10 +690,7 @@ export default function TronWireframes() {
   // ===== Dev tests (ligeros) =====
   const runDebugTests = () => {
     try {
-      const msg1 = buildWhatsAppMessage(
-        [{ id: 1, nombre: "A", precio: 1000, qty: 2 }],
-        2000
-      );
+      const msg1 = buildWhatsAppMessage([{ id: 1, nombre: "A", precio: 1000, qty: 2 }], 2000);
       console.assert(msg1.includes("• A x2"), "WhatsApp msg debe incluir bullet y cantidad");
       const lines = msg1.split("\n");
       console.assert(lines.length >= 4, "WhatsApp msg debe tener saltos de línea");
@@ -892,46 +716,26 @@ export default function TronWireframes() {
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-4 text-gray-200">
-            <button onClick={() => setSection("inicio")} className="hover:text-orange-400">
-              Inicio
-            </button>
-            <button onClick={() => setSection("quienes")} className="hover:text-orange-400">
-              Quiénes Somos
-            </button>
-            <button onClick={() => setSection("catalogo")} className="hover:text-orange-400">
-              Catálogo
-            </button>
-            <button onClick={() => setSection("mayoristas")} className="hover:text-orange-400">
-              Mayoristas
-            </button>
-            <button onClick={() => setSection("contacto")} className="hover:text-orange-400">
-              Contacto
-            </button>
-            <button onClick={() => setSection("carrito")} className="relative bg-gray-800 px-3 py-1 rounded-lg">
-              🛒 {cartCount}
-            </button>
+            <button onClick={() => setSection("inicio")} className="hover:text-orange-400">Inicio</button>
+            <button onClick={() => setSection("quienes")} className="hover:text-orange-400">Quiénes Somos</button>
+            <button onClick={() => setSection("catalogo")} className="hover:text-orange-400">Catálogo</button>
+            <button onClick={() => setSection("mayoristas")} className="hover:text-orange-400">Mayoristas</button>
+            <button onClick={() => setSection("contacto")} className="hover:text-orange-400">Contacto</button>
+            <button onClick={() => setSection("carrito")} className="relative bg-gray-800 px-3 py-1 rounded-lg">🛒 {cartCount}</button>
             {loggedIn ? (
               <div className="flex items-center gap-3">
                 <span className="text-sm text-orange-400 font-semibold">Bienvenido, Mayorista</span>
-                <button onClick={handleLogout} className="bg-gray-700 px-3 py-1 rounded-lg">
-                  Cerrar sesión
-                </button>
+                <button onClick={handleLogout} className="bg-gray-700 px-3 py-1 rounded-lg">Cerrar sesión</button>
               </div>
             ) : (
-              <button onClick={() => setSection("acceso")} className="bg-orange-500 text-black px-3 py-1 rounded-lg">
-                Acceso Mayoristas
-              </button>
+              <button onClick={() => setSection("acceso")} className="bg-orange-500 text-black px-3 py-1 rounded-lg">Acceso Mayoristas</button>
             )}
           </nav>
 
           {/* Mobile actions */}
           <div className="md:hidden flex items-center gap-2">
-            <button onClick={() => setSection("carrito")} className="bg-gray-800 px-3 py-2 rounded-lg">
-              🛒 {cartCount}
-            </button>
-            <button onClick={() => setMobileMenuOpen(true)} className="bg-gray-800 px-3 py-2 rounded-lg">
-              ☰
-            </button>
+            <button onClick={() => setSection("carrito")} className="bg-gray-800 px-3 py-2 rounded-lg">🛒 {cartCount}</button>
+            <button onClick={() => setMobileMenuOpen(true)} className="bg-gray-800 px-3 py-2 rounded-lg">☰</button>
           </div>
         </div>
 
@@ -942,75 +746,17 @@ export default function TronWireframes() {
             <div className="absolute right-0 top-0 h-full w-72 bg-gray-900 p-4 space-y-3 shadow-xl">
               <div className="flex justify-between items-center">
                 <span className="text-orange-400 font-bold">Menú</span>
-                <button onClick={() => setMobileMenuOpen(false)} className="bg-gray-800 px-3 py-1 rounded-lg">
-                  ✕
-                </button>
+                <button onClick={() => setMobileMenuOpen(false)} className="bg-gray-800 px-3 py-1 rounded-lg">✕</button>
               </div>
-              <button
-                onClick={() => {
-                  setSection("inicio");
-                  setMobileMenuOpen(false);
-                }}
-                className="w-full text-left hover:text-orange-400"
-              >
-                Inicio
-              </button>
-              <button
-                onClick={() => {
-                  setSection("quienes");
-                  setMobileMenuOpen(false);
-                }}
-                className="w-full text-left hover:text-orange-400"
-              >
-                Quiénes Somos
-              </button>
-              <button
-                onClick={() => {
-                  setSection("catalogo");
-                  setMobileMenuOpen(false);
-                }}
-                className="w-full text-left hover:text-orange-400"
-              >
-                Catálogo
-              </button>
-              <button
-                onClick={() => {
-                  setSection("mayoristas");
-                  setMobileMenuOpen(false);
-                }}
-                className="w-full text-left hover:text-orange-400"
-              >
-                Mayoristas
-              </button>
-              <button
-                onClick={() => {
-                  setSection("contacto");
-                  setMobileMenuOpen(false);
-                }}
-                className="w-full text-left hover:text-orange-400"
-              >
-                Contacto
-              </button>
+              <button onClick={() => { setSection('inicio'); setMobileMenuOpen(false); }} className="w-full text-left hover:text-orange-400">Inicio</button>
+              <button onClick={() => { setSection('quienes'); setMobileMenuOpen(false); }} className="w-full text-left hover:text-orange-400">Quiénes Somos</button>
+              <button onClick={() => { setSection('catalogo'); setMobileMenuOpen(false); }} className="w-full text-left hover:text-orange-400">Catálogo</button>
+              <button onClick={() => { setSection('mayoristas'); setMobileMenuOpen(false); }} className="w-full text-left hover:text-orange-400">Mayoristas</button>
+              <button onClick={() => { setSection('contacto'); setMobileMenuOpen(false); }} className="w-full text-left hover:text-orange-400">Contacto</button>
               {loggedIn ? (
-                <button
-                  onClick={() => {
-                    handleLogout();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="w-full text-left"
-                >
-                  Cerrar sesión
-                </button>
+                <button onClick={() => { handleLogout(); setMobileMenuOpen(false); }} className="w-full text-left">Cerrar sesión</button>
               ) : (
-                <button
-                  onClick={() => {
-                    setSection("acceso");
-                    setMobileMenuOpen(false);
-                  }}
-                  className="w-full text-left"
-                >
-                  Acceso Mayoristas
-                </button>
+                <button onClick={() => { setSection('acceso'); setMobileMenuOpen(false); }} className="w-full text-left">Acceso Mayoristas</button>
               )}
             </div>
           </div>
@@ -1022,18 +768,10 @@ export default function TronWireframes() {
 
       {/* Mobile bottom bar */}
       <div className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-gray-900 border-t border-gray-800 p-2 flex items-center justify-around">
-        <button onClick={() => setSection("inicio")} className="text-sm">
-          Inicio
-        </button>
-        <button onClick={() => setSection("catalogo")} className="text-sm">
-          Catálogo
-        </button>
-        <button onClick={() => setSection("carrito")} className="text-sm">
-          🛒 {cartCount}
-        </button>
-        <button onClick={() => setSection("acceso")} className="text-sm">
-          Acceso
-        </button>
+        <button onClick={() => setSection('inicio')} className="text-sm">Inicio</button>
+        <button onClick={() => setSection('catalogo')} className="text-sm">Catálogo</button>
+        <button onClick={() => setSection('carrito')} className="text-sm">🛒 {cartCount}</button>
+        <button onClick={() => setSection('acceso')} className="text-sm">Acceso</button>
       </div>
 
       {/* Footer */}
