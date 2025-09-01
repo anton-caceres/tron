@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import type { ChangeEvent } from "react";
 import jsPDF from "jspdf";
+import Header from "./components/layout/Header";
+import Footer from "./components/layout/Footer";
 
 /* ===================== Tipos ===================== */
 type Product = {
@@ -26,7 +28,6 @@ type Company = {
 export default function TronWireframes() {
   // ===== Navegación =====
   const [section, setSection] = useState<string>("inicio");
-  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   // ===== Auth (simulada) =====
   const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
@@ -709,59 +710,12 @@ export default function TronWireframes() {
   // ===== Layout =====
   return (
     <div className="bg-black min-h-screen text-white font-sans">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-gray-900 p-3 sm:p-4 shadow-md">
-        <div className="max-w-6xl mx-auto flex items-center justify-between gap-3">
-          <div className="text-xl sm:text-2xl font-extrabold text-orange-500">LOGO TRON</div>
-
-          {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-4 text-gray-200">
-            <button onClick={() => setSection("inicio")} className="hover:text-orange-400">Inicio</button>
-            <button onClick={() => setSection("quienes")} className="hover:text-orange-400">Quiénes Somos</button>
-            <button onClick={() => setSection("catalogo")} className="hover:text-orange-400">Catálogo</button>
-            <button onClick={() => setSection("mayoristas")} className="hover:text-orange-400">Mayoristas</button>
-            <button onClick={() => setSection("contacto")} className="hover:text-orange-400">Contacto</button>
-            <button onClick={() => setSection("carrito")} className="relative bg-gray-800 px-3 py-1 rounded-lg">🛒 {cartCount}</button>
-            {loggedIn ? (
-              <div className="flex items-center gap-3">
-                <span className="text-sm text-orange-400 font-semibold">Bienvenido, Mayorista</span>
-                <button onClick={handleLogout} className="bg-gray-700 px-3 py-1 rounded-lg">Cerrar sesión</button>
-              </div>
-            ) : (
-              <button onClick={() => setSection("acceso")} className="bg-orange-500 text-black px-3 py-1 rounded-lg">Acceso Mayoristas</button>
-            )}
-          </nav>
-
-          {/* Mobile actions */}
-          <div className="md:hidden flex items-center gap-2">
-            <button onClick={() => setSection("carrito")} className="bg-gray-800 px-3 py-2 rounded-lg">🛒 {cartCount}</button>
-            <button onClick={() => setMobileMenuOpen(true)} className="bg-gray-800 px-3 py-2 rounded-lg">☰</button>
-          </div>
-        </div>
-
-        {/* Mobile menu panel */}
-        {mobileMenuOpen && (
-          <div className="md:hidden fixed inset-0 z-[60]">
-            <div className="absolute inset-0 bg-black/60" onClick={() => setMobileMenuOpen(false)}></div>
-            <div className="absolute right-0 top-0 h-full w-72 bg-gray-900 p-4 space-y-3 shadow-xl">
-              <div className="flex justify-between items-center">
-                <span className="text-orange-400 font-bold">Menú</span>
-                <button onClick={() => setMobileMenuOpen(false)} className="bg-gray-800 px-3 py-1 rounded-lg">✕</button>
-              </div>
-              <button onClick={() => { setSection('inicio'); setMobileMenuOpen(false); }} className="w-full text-left hover:text-orange-400">Inicio</button>
-              <button onClick={() => { setSection('quienes'); setMobileMenuOpen(false); }} className="w-full text-left hover:text-orange-400">Quiénes Somos</button>
-              <button onClick={() => { setSection('catalogo'); setMobileMenuOpen(false); }} className="w-full text-left hover:text-orange-400">Catálogo</button>
-              <button onClick={() => { setSection('mayoristas'); setMobileMenuOpen(false); }} className="w-full text-left hover:text-orange-400">Mayoristas</button>
-              <button onClick={() => { setSection('contacto'); setMobileMenuOpen(false); }} className="w-full text-left hover:text-orange-400">Contacto</button>
-              {loggedIn ? (
-                <button onClick={() => { handleLogout(); setMobileMenuOpen(false); }} className="w-full text-left">Cerrar sesión</button>
-              ) : (
-                <button onClick={() => { setSection('acceso'); setMobileMenuOpen(false); }} className="w-full text-left">Acceso Mayoristas</button>
-              )}
-            </div>
-          </div>
-        )}
-      </header>
+      <Header
+        cartCount={cartCount}
+        loggedIn={loggedIn}
+        onLogout={handleLogout}
+        onNav={(s) => setSection(s)}
+      />
 
       {/* Contenido */}
       {renderSection()}
@@ -774,16 +728,7 @@ export default function TronWireframes() {
         <button onClick={() => setSection('acceso')} className="text-sm">Acceso</button>
       </div>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 p-6 pb-16 md:pb-6 text-center text-gray-400 text-sm space-y-2 mt-8">
-        <p>© 2025 TRON Equipment – Todos los derechos reservados</p>
-        <p>Links rápidos: Inicio | Catálogo | Mayoristas | Contacto</p>
-        <p className="hidden sm:flex justify-center gap-4">
-          <span>📞</span>
-          <span>📸</span>
-          <span>🌍</span>
-        </p>
-      </footer>
+      <Footer />
     </div>
   );
 }
