@@ -1,17 +1,23 @@
-import { useState } from "react";
-import type { FC } from "react";
+import { useState, type FC } from "react";
+import type { Section } from "../../types";
 
 type Props = {
   cartCount: number;
   loggedIn: boolean;
   onLogout: () => void;
-  onNav: (section:
-    | "inicio" | "quienes" | "catalogo" | "mayoristas" | "contacto"
-    | "carrito" | "acceso") => void;
+  onNav: (section: Section) => void;
 };
 
 const Header: FC<Props> = ({ cartCount, loggedIn, onLogout, onNav }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const items: { key: Section; label: string }[] = [
+    { key: "inicio", label: "Inicio" },
+    { key: "quienes", label: "Quiénes Somos" },
+    { key: "catalogo", label: "Catálogo" },
+    { key: "mayoristas", label: "Mayoristas" },
+    { key: "contacto", label: "Contacto" },
+  ];
 
   return (
     <header className="sticky top-0 z-50 bg-gray-900 p-3 sm:p-4 shadow-md">
@@ -27,19 +33,23 @@ const Header: FC<Props> = ({ cartCount, loggedIn, onLogout, onNav }) => {
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-4 text-gray-200">
-          <button onClick={() => onNav("inicio")} className="hover:text-orange-400">Inicio</button>
-          <button onClick={() => onNav("quienes")} className="hover:text-orange-400">Quiénes Somos</button>
-          <button onClick={() => onNav("catalogo")} className="hover:text-orange-400">Catálogo</button>
-          <button onClick={() => onNav("mayoristas")} className="hover:text-orange-400">Mayoristas</button>
-          <button onClick={() => onNav("contacto")} className="hover:text-orange-400">Contacto</button>
-          <button onClick={() => onNav("carrito")} className="relative bg-gray-800 px-3 py-1 rounded-lg">🛒 {cartCount}</button>
+          {items.map(({ key, label }) => (
+            <button key={key} onClick={() => onNav(key)} className="hover:text-orange-400">
+              {label}
+            </button>
+          ))}
+          <button onClick={() => onNav("carrito")} className="relative bg-gray-800 px-3 py-1 rounded-lg">
+            🛒 {cartCount}
+          </button>
           {loggedIn ? (
             <div className="flex items-center gap-3">
               <span className="text-sm text-orange-400 font-semibold">Bienvenido, Mayorista</span>
               <button onClick={onLogout} className="bg-gray-700 px-3 py-1 rounded-lg">Cerrar sesión</button>
             </div>
           ) : (
-            <button onClick={() => onNav("acceso")} className="bg-orange-500 text-black px-3 py-1 rounded-lg">Acceso Mayoristas</button>
+            <button onClick={() => onNav("acceso")} className="bg-orange-500 text-black px-3 py-1 rounded-lg">
+              Acceso Mayoristas
+            </button>
           )}
         </nav>
 
@@ -59,16 +69,10 @@ const Header: FC<Props> = ({ cartCount, loggedIn, onLogout, onNav }) => {
               <span className="text-orange-400 font-bold">Menú</span>
               <button onClick={() => setMobileMenuOpen(false)} className="bg-gray-800 px-3 py-1 rounded-lg">✕</button>
             </div>
-            {[
-              ["inicio","Inicio"],
-              ["quienes","Quiénes Somos"],
-              ["catalogo","Catálogo"],
-              ["mayoristas","Mayoristas"],
-              ["contacto","Contacto"],
-            ].map(([key,label]) => (
+            {items.map(({ key, label }) => (
               <button
                 key={key}
-                onClick={() => { onNav(key as Props["onNav"] extends (s: infer S)=>any ? S : never); setMobileMenuOpen(false); }}
+                onClick={() => { onNav(key); setMobileMenuOpen(false); }}
                 className="w-full text-left hover:text-orange-400"
               >
                 {label}
